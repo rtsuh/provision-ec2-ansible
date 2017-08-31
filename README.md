@@ -1,6 +1,6 @@
 ## Mysql Server Provisioning in EC2 using Ansible 
 
-**OBJECTIVE:**
+**Objectives:**
 
 Create an Ansible playbook that takes in an input of a number, and launch/spin-up that number of AWS EC2 instances in the default VPC with MySQL installed and all instances updated.
 
