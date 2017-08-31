@@ -16,4 +16,4 @@ After setting all variables, run it:
 
     ansible-playbook -vv -i localhost, -e "type=webservers" provision-ec2.yml
     
-More info: [http://allandenot.com/devops/2015/01/31/provisioning-ec2-hosts-with-ansible.html](http://allandenot.com/devops/2015/01/31/provisioning-ec2-hosts-with-ansible.html)
+More info: [https://tinyurl.com/yd7rs8hb](http://allandenot.com/devops/2015/01/31/provisioning-ec2-hosts-with-ansible.html)
