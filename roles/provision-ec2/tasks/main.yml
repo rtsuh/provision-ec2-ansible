@@ -1,0 +1,68 @@
+---
+
+ - name: Provision EC2 with mysql installed 
+   local_action:
+     module: ec2
+     key_name: "{{ ec2_keypair }}"
+     group_id: "{{ ec2_security_group }}"
+     instance_type: "{{ ec2_instance_type }}"
+     image: "{{ ec2_image }}"
+     vpc_subnet_id: "{{ ec2_subnet_ids|random }}"
+     region: "{{ ec2_region }}"
+     instance_tags: '{"Name":"{{ec2_tag_Name}}","Type":"{{ec2_tag_Type}}","Environment":"{{ec2_tag_Environment}}"}'
+     assign_public_ip: yes
+     wait: true
+     count: "{{ ec2_instance_num }}"
+     #count: 1
+     #volumes:
+     #- device_name: /dev/xvda
+     #device_type: gp2
+     #volume_size: "{{ ec2_volume_size }}"
+     #delete_on_termination: true
+   register: ec2
+
+ - debug: var=item
+   with_items: "{{ ec2.instances}}"
+
+ - add_host: name={{ item.public_ip }} >
+             groups=tag_Type_{{ec2_tag_Type}},tag_Environment_{{ec2_tag_Environment}}
+             ec2_region={{ec2_region}}
+             ec2_tag_Name={{ec2_tag_Name}}
+             ec2_tag_Type={{ec2_tag_Type}}
+             ec2_tag_Environment={{ec2_tag_Environment}}
+             ec2_ip_address={{item.public_ip}}
+   with_items: "{{ ec2.instances}}"
+
+ - name: Wait for the instances to boot by checking the ssh port
+   wait_for: host={{ item.public_dns_name }} port=22 search_regex=OpenSSH
+   with_items: "{{ ec2.instances}}"
+
+ - name: Install mysql 
+   apt: name={{ item }} update_cache=yes cache_valid_time=3600 state=present
+   become: True
+   with_items: 
+    - python-mysqldb
+    - mysql-server
+
+ - name: Start the mysql service
+   become: True
+   service:  
+     name: mysql
+     state: started
+     enabled: True
+
+ - name: Update mysql root password for all root accounts
+   become: True
+   mysql_user: 
+     name: root 
+     host: "{{ item }}" 
+     password: "{{ mysql_root_password }}"
+     login_user: root
+     login_password: "{{ mysql_root_password }}"
+     check_implicit_admin: yes
+     priv: "*.*:ALL,GRANT"
+     with_items: 
+        - "{{ ansible_hostname }}"
+        - 127.0.0.1
+        - ::1
+        - localhost 

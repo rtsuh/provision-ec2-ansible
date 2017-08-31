@@ -1,0 +1,6 @@
+---
+
+- name: Update apt packages in ubuntu
+  apt: 
+    upgrade: dist
+    update_cache: yes
