@@ -11,11 +11,11 @@ Create a variables file using *ec2_vars/sample.yml* as a template.
 
 E.g. 
 
-    cp ec2_vars/sample.yml ec2_vars/webservers.yml
-    vi ec2_vars/webservers.yml
+    cp ec2_vars/sample.yml ec2_vars/mysql-instances.yml
+    vi ec2_vars/mysql-instances.yml
     
 After setting all variables, run it:
 
-    ansible-playbook -vv -i localhost, -e "type=webservers" provision-ec2.yml
+    ansible-playbook -vv -e "type=mysql-instances" provision-ec2.yml
     
 More info: [Mysql Server Provisioning in EC2 using Ansible](https://tinyurl.com/yd7rs8hb)
