@@ -1,0 +1,17 @@
+---
+
+- name: update-all
+  hosts: all
+  become: True
+  roles:
+    - update-ec2
+
+- name: provisioning ec2 and mysql 
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  user: ubuntu
+  pre_tasks:
+    - include_vars: ~/ansible/playbooks/ec2-vars/{{type}}.yml
+  roles:
+    - provision-ec2
