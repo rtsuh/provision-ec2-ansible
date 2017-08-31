@@ -1,8 +1,8 @@
 ec2_keypair: "test01"
-ec2_security_group: "sg-8ef627e6" # mysql group
+ec2_security_group: "sg-8ef427a5" # fictitious mysql group
 ec2_instance_type: "t2.micro"
 ec2_image: "ami-43391926" # ubuntu 14.04
-ec2_subnet_ids: ['subnet-66e38b1d'] 
+ec2_subnet_ids: ['subnet-66f384q1r'] # fictitious subnet  
 ec2_region: "us-east-2"
 ec2_tag_Name: "ansible_client"
 ec2_tag_Type: "ansible_mysql"
